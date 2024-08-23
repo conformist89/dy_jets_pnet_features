@@ -3,6 +3,10 @@ import uproot
 import matplotlib.pyplot as plt
 from XRootD import client
 import argparse
+import time
+
+# Record the start time
+start_time = time.time()
 
 parser = argparse.ArgumentParser("simple_example")
 parser.add_argument("--quantity", help="Distribution you want to plot", type=str)
@@ -93,14 +97,23 @@ if args.quantity == "gen_mu_tau_deltaR_with_fj":
     xlim_up = 10
     xlim_down = 0
 if args.quantity == "fatjet_mu_tau_deltaPhi":
-    label = r'$\Delta$ R (fatjet && gen $\tau_{had} \tau_{\mu} pair)$'
-    xlim_up = 5
-    xlim_down = -5
+    label = r'$\Delta$ $\phi$ (fatjet && gen $\tau_{had} \tau_{\mu} pair)$'
+    xlim_up = 4
+    xlim_down = -4
 
 plt.xlabel(label)
 
 plt.ylabel("dN")
 plt.xlim(xlim_down, xlim_up)
-plt.ylim(0, 0.6e6)
+plt.ylim(0, 0.4e6)
 
 plt.savefig(args.quantity+"_zp_incl.pdf")
+
+# Record the end time
+end_time = time.time()
+
+# Calculate the elapsed time
+elapsed_time = end_time - start_time
+
+# Print the elapsed time
+print(f"Execution time: {elapsed_time:.2f} seconds")
