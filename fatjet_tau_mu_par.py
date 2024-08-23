@@ -5,7 +5,8 @@ from XRootD import client
 import argparse
 
 parser = argparse.ArgumentParser("simple_example")
-parser.add_argument("counter", help="An integer will be increased by 1 and printed.", type=int)
+parser.add_argument("--quantity", help="Distribution you want to plot", type=str)
+parser.add_argument("--tag", help="Ntuple production tag", type=str)
 args = parser.parse_args()
 
 def list_remote_files(remote_redirector, remote_path):
@@ -34,7 +35,8 @@ samples = [
 ntuples = {}
 channel = 'mt'
 remote_redirector = 'root://cmsdcache-kit-disk.gridka.de:1094/'
-remote_path = '/store/user/olavoryk/CROWN/ntuples/boost_DY_18UL_6Aug_fj_m_tau_dr_v2/CROWNRun/2018/'
+ 
+remote_path = "/store/user/olavoryk/CROWN/ntuples/{folder}/CROWNRun/2018/".format(folder=str(args.tag))
 
 def process_sample(sa):
     remote_files = list_remote_files(remote_redirector, remote_path + sa + channel + "/")
@@ -49,7 +51,7 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
 
 
 def load_events(file_names):
-    return uproot.lazy(file_names, filter_name="gen_mu_tau_deltaR_with_fj")
+    return uproot.lazy(file_names, filter_name=args.quantity)
 
 
 file_names = []
@@ -76,15 +78,29 @@ plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 
-plt.hist(events['fatjet_mu_tau_deltaR'], bins = 100)
-# plt.hist(events['gen_mu_tau_deltaR_with_fj'], bins = 100)
+plt.hist(events[args.quantity], bins = 100)
 
-plt.xlabel(r"$\Delta$ R (fatjet && gen $\tau_{had} \tau_{\mu} pair)$")
-# plt.xlabel(r"$\Delta$ R ( gen $\tau_{had}$ && gen $\tau_{\mu}$ pair)")
+label = ''
+xlim_up = 0
+xlim_down = 0
+
+if args.quantity == "fatjet_mu_tau_deltaR":
+    label = r"$\Delta$ R (fatjet && gen $\tau_{had} \tau_{\mu} pair)$"
+    xlim_up = 10
+    xlim_down = 0
+if args.quantity == "gen_mu_tau_deltaR_with_fj":
+    label = r"$\Delta$ R ( gen $\tau_{had}$ && gen $\tau_{\mu}$ pair)"
+    xlim_up = 10
+    xlim_down = 0
+if args.quantity == "fatjet_mu_tau_deltaPhi":
+    label = r'$\Delta$ R (fatjet && gen $\tau_{had} \tau_{\mu} pair)$'
+    xlim_up = 5
+    xlim_down = -5
+
+plt.xlabel(label)
 
 plt.ylabel("dN")
-plt.xlim(0, 10)
+plt.xlim(xlim_down, xlim_up)
 plt.ylim(0, 0.6e6)
-# plt.savefig("fatjet_tau_mu_dr_par_cleanted_fatjets_zp_incl.png")
-plt.savefig("fatjet_tau_mu_dr_par_cleanted_fatjets_zp_pnet_cut.png")
-# plt.savefig("gen_tau_mu_dr_par_cleanted_fatjets_zp_incl.png")
+
+plt.savefig(args.quantity+"_zp_incl.pdf")
