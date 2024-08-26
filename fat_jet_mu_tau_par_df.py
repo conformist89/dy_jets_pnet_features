@@ -13,6 +13,9 @@ start_time = time.time()
 parser = argparse.ArgumentParser("simple_example")
 parser.add_argument("--quantity", help="Distribution you want to plot", type=str)
 parser.add_argument("--tag", help="Ntuple production tag", type=str)
+parser.add_argument("--pnetcut", help="Particle Net cut to be used", type=float)
+parser.add_argument("--bins", help="Number of bins on the histogram", type=int)
+
 args = parser.parse_args()
 
 def list_remote_files(remote_redirector, remote_path):
@@ -58,24 +61,18 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
 
 
 
-file_names = {}
 file_names_lst = []
 for key, value in ntuples.items():
     for v in value:
-        # file_names.append(remote_redirector + v + ":ntuple")
-        file_names[remote_redirector + v] = "ntuple"
         file_names_lst.append(remote_redirector + v)
 
-
-myfile = file_names_lst[0]
 
 df = ROOT.RDataFrame("ntuple", file_names_lst)
 data_dict = df.AsNumpy([args.quantity, "fj_Xtm_particleNet_XtmVsQCD"])
 pandas_df = pd.DataFrame(data_dict)
 
 
-pnet_cut = 0.75
-df_pnet = pandas_df[(pandas_df["fj_Xtm_particleNet_XtmVsQCD"] > pnet_cut) & (pandas_df[args.quantity] != 27)]
+df_pnet = pandas_df[(pandas_df["fj_Xtm_particleNet_XtmVsQCD"] > args.pnetcut) & (pandas_df[args.quantity] != 27)]
 
 
 SMALL_SIZE = 12
@@ -98,7 +95,7 @@ xlim_down = 0
 
 if args.quantity == "fatjet_mu_tau_deltaR":
     label = r"$\Delta$ R (fatjet && gen $\tau_{had} \tau_{\mu} pair)$"
-    xlim_up = 0.8
+    xlim_up = 10
     xlim_down = 0
 if args.quantity == "gen_mu_tau_deltaR_with_fj":
     label = r"$\Delta$ R ( gen $\tau_{had}$ && gen $\tau_{\mu}$ pair)"
@@ -114,9 +111,9 @@ if args.quantity == "fatjet_mu_tau_deltaPhi":
 
 plt.xlabel(label)
 plt.ylabel("dN")
-plt.hist(df_pnet[args.quantity].values, bins = 250)
+plt.hist(df_pnet[args.quantity].values, args.bins )
 
 plt.xlim(xlim_down, xlim_up)
 # plt.ylim(0, 0.4e6)
 
-plt.savefig(args.quantity+"_zp_incl_pnet_{cut}.pdf".format(cut=str(pnet_cut)))
+plt.savefig(args.quantity+"_zp_incl_pnet_{cut}.pdf".format(cut=str(args.pnetcut)))
