@@ -69,14 +69,14 @@ for key, value in ntuples.items():
 
 
 df = ROOT.RDataFrame("ntuple", file_names_lst)
-data_dict = df.AsNumpy([args.quantity, "fj_XtmVsQCD_pt"])
+data_dict = df.AsNumpy([args.quantity, "fj_XtmVsQCD_pt", "fj_Xtm_particleNet_XtmVsQCD"])
 pandas_df = pd.DataFrame(data_dict)
 
-
-df_pt_100_250 = pandas_df[((pandas_df["fj_XtmVsQCD_pt"] > 100) & (pandas_df["fj_XtmVsQCD_pt"] < 250)) & (pandas_df[args.quantity] != 27)]
-df_pt_250_400 = pandas_df[((pandas_df["fj_XtmVsQCD_pt"] > 250) & (pandas_df["fj_XtmVsQCD_pt"] < 400)) & (pandas_df[args.quantity] != 27)]
-df_pt_400_500 = pandas_df[((pandas_df["fj_XtmVsQCD_pt"] > 400) & (pandas_df["fj_XtmVsQCD_pt"] < 500)) & (pandas_df[args.quantity] != 27)]
-df_pt_500Inf = pandas_df[((pandas_df["fj_XtmVsQCD_pt"] > 500) & (pandas_df["fj_XtmVsQCD_pt"] < pandas_df["fj_XtmVsQCD_pt"].max() )) & (pandas_df[args.quantity] != 27)]
+pnetcut=-5
+df_pt_100_250 = pandas_df[((pandas_df["fj_XtmVsQCD_pt"] > 100) & (pandas_df["fj_XtmVsQCD_pt"] < 250)) & (pandas_df[args.quantity] != 27) & (pandas_df["fj_Xtm_particleNet_XtmVsQCD"] >  pnetcut) ]
+df_pt_250_400 = pandas_df[((pandas_df["fj_XtmVsQCD_pt"] > 250) & (pandas_df["fj_XtmVsQCD_pt"] < 400)) & (pandas_df[args.quantity] != 27) & (pandas_df["fj_Xtm_particleNet_XtmVsQCD"] >  pnetcut)]
+df_pt_400_500 = pandas_df[((pandas_df["fj_XtmVsQCD_pt"] > 400) & (pandas_df["fj_XtmVsQCD_pt"] < 500)) & (pandas_df[args.quantity] != 27) & (pandas_df["fj_Xtm_particleNet_XtmVsQCD"] >  pnetcut)]
+df_pt_500Inf = pandas_df[((pandas_df["fj_XtmVsQCD_pt"] > 500) & (pandas_df["fj_XtmVsQCD_pt"] < pandas_df["fj_XtmVsQCD_pt"].max() )) & (pandas_df[args.quantity] != 27) & (pandas_df["fj_Xtm_particleNet_XtmVsQCD"] >  pnetcut) ]
 
 
 SMALL_SIZE = 12
@@ -120,9 +120,9 @@ plt.hist(df_pt_250_400[args.quantity].values, args.bins, label=r"$p_{T}$ 250-400
 plt.hist(df_pt_400_500[args.quantity].values, args.bins, label=r"$p_{T}$ 400-500 GeV" )
 plt.hist(df_pt_500Inf[args.quantity].values, args.bins, label=r"$p_{T}$ 500-Inf GeV" )
 
-plt.legend()
+plt.legend(title=r'Fatjet $p_{T}$')
 
 plt.xlim(xlim_down, xlim_up)
 # plt.ylim(0, 0.4e6)
 
-plt.savefig(args.quantity+"_fatjet_pt_diff_together.pdf")
+plt.savefig(args.quantity+"_fatjet_pt_diff_together_pnet_cut_incl.pdf")
