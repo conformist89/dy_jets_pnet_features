@@ -72,7 +72,7 @@ data_dict = df.AsNumpy([args.quantity, "fj_Xtm_particleNet_XtmVsQCD"])
 pandas_df = pd.DataFrame(data_dict)
 
 
-df_pnet = pandas_df[(pandas_df["fj_Xtm_particleNet_XtmVsQCD"] > args.pnetcut) & (pandas_df[args.quantity] != 27)]
+df_pnet = pandas_df[(pandas_df["fj_Xtm_particleNet_XtmVsQCD"] > args.pnetcut) & (pandas_df[args.quantity] != 8)]
 
 
 SMALL_SIZE = 12
