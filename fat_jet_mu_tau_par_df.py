@@ -42,13 +42,22 @@ def get_dy_samples():
         samples = d["samples"]
         return samples
 
-samples = get_dy_samples()
+def get_legend_info(feature):
+    with open('dy-ntuples.json') as f:
+        d = json.load(f)
+    features = d["features"]
+    feat_info = features[feature]
+
+    return feat_info
+
 
 ntuples = {}
 channel = 'mt'
 remote_redirector = 'root://cmsdcache-kit-disk.gridka.de:1094/'
  
 remote_path = "/store/user/olavoryk/CROWN/ntuples/{folder}/CROWNRun/2018/".format(folder=str(args.tag))
+
+samples = get_dy_samples()
 
 def process_sample(sa):
     remote_files = list_remote_files(remote_redirector, remote_path + sa + channel + "/")
@@ -75,7 +84,13 @@ data_dict = df.AsNumpy([args.quantity, "fj_Xtm_particleNet_XtmVsQCD"])
 pandas_df = pd.DataFrame(data_dict)
 
 
-df_pnet = pandas_df[(pandas_df["fj_Xtm_particleNet_XtmVsQCD"] > args.pnetcut) & (pandas_df[args.quantity] != 8)]
+legend_inf = get_legend_info(args.quantity)
+label = legend_inf["label"] 
+xlim_up = legend_inf["xlim_up"] 
+xlim_down = legend_inf["xlim_down"]
+unphys_value = legend_inf["unphys_value"]
+
+df_pnet = pandas_df[(pandas_df["fj_Xtm_particleNet_XtmVsQCD"] > args.pnetcut) & (pandas_df[args.quantity] != unphys_value)]
 
 
 SMALL_SIZE = 12
@@ -92,31 +107,10 @@ plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 
 
-label = ''
-xlim_up = 0
-xlim_down = 0
-
-if args.quantity == "fatjet_mu_tau_deltaR":
-    label = r"$\Delta$ R (fatjet && gen $\tau_{had} \tau_{\mu} pair)$"
-    xlim_up = 10
-    xlim_down = 0
-if args.quantity == "gen_mu_tau_deltaR_with_fj":
-    label = r"$\Delta$ R ( gen $\tau_{had}$ && gen $\tau_{\mu}$ pair)"
-    xlim_up = 10
-    xlim_down = 0
-if args.quantity == "fatjet_mu_tau_deltaPhi":
-    label = r'$\Delta$ $\phi$ (fatjet && gen $\tau_{had} \tau_{\mu} pair)$'
-    xlim_up = 4
-    xlim_down = -4
-
-
-
-
 plt.xlabel(label)
 plt.ylabel("dN")
 plt.hist(df_pnet[args.quantity].values, args.bins )
 
 plt.xlim(xlim_down, xlim_up)
-# plt.ylim(0, 0.4e6)
 
 plt.savefig(args.quantity+"_zp_incl_pnet_{cut}.pdf".format(cut=str(args.pnetcut)))

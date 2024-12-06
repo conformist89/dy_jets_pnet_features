@@ -5,5 +5,41 @@
         "DYJetsToLL_LHEFilterPtZ-250To400_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8/",
         "DYJetsToLL_LHEFilterPtZ-400To650_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8/",
         "DYJetsToLL_LHEFilterPtZ-650ToInf_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8/"
-    ]
+    ],
+
+    "features" :
+    {
+    "fatjet_mu_tau_deltaR" :
+    {
+        "xlim_down" : 0,
+        "xlim_up" : 10,
+        "unphys_value" : 27,
+        "label": "$\\Delta$ R (fatjet && gen $\\tau_{had} \\tau_{\\mu}$ pair)"
+    },
+
+    "gen_mu_tau_deltaR_with_fj" :
+    {
+        "xlim_down" : 0,
+        "xlim_up" : 10,
+        "unphys_value" : 27,
+        "label" : "$\\Delta$ R ( gen $\\tau_{had}$ && gen $\\tau_{\\mu}$ pair)"
+    }, 
+
+    "fatjet_mu_tau_deltaPhi" :
+    {
+        "xlim_down" : -4,
+        "xlim_up" : 4,
+        "unphys_value" : 8,
+        "label" : "\\Delta$ \\phi (fatjet && gen $\\tau_{had} \\tau_{\\mu} pair)$"
+    },
+
+    "fj_Xtm_clothest_subj_muon_pt" :
+    {
+        "xlim_down" : 0,
+        "xlim_up" : 500,
+        "unphys_value" : -10,
+        "label" : "\\p_{T} of subjet clothest to fatjet \\mu$"
+    }
+
+}
 }
