@@ -6,6 +6,7 @@ import argparse
 import time
 import ROOT
 import pandas as pd
+import json
 
 # Record the start time
 start_time = time.time()
@@ -34,12 +35,14 @@ def list_remote_files(remote_redirector, remote_path):
         print(f"Failed to list directory {remote_path}: {status.message}")
     return root_files
 
-samples = [
-    "DYJetsToLL_LHEFilterPtZ-100To250_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8RunIISummer20UL18NanoAODv12-106X/",
-    "DYJetsToLL_LHEFilterPtZ-250To400_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8RunIISummer20UL18NanoAODv12-106X/",
-    "DYJetsToLL_LHEFilterPtZ-400To650_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8RunIISummer20UL18NanoAODv12-106X/",
-    "DYJetsToLL_LHEFilterPtZ-650ToInf_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8RunIISummer20UL18NanoAODv12-106X/"
-]
+
+def get_dy_samples():
+    with open('dy-ntuples.json') as f:
+        d = json.load(f)
+        samples = d["samples"]
+        return samples
+
+samples = get_dy_samples()
 
 ntuples = {}
 channel = 'mt'
