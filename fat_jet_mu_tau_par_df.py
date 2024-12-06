@@ -16,6 +16,7 @@ parser.add_argument("--quantity", help="Distribution you want to plot", type=str
 parser.add_argument("--tag", help="Ntuple production tag", type=str)
 parser.add_argument("--pnetcut", help="Particle Net cut to be used", type=float)
 parser.add_argument("--bins", help="Number of bins on the histogram", type=int)
+parser.add_argument("--era", help="Data taking period", type=str)
 
 args = parser.parse_args()
 
@@ -50,6 +51,18 @@ def get_legend_info(feature):
 
     return feat_info
 
+
+def get_lumi(era):
+    if era == "2016preVFP":
+        lumi = "19.5"  # "36.326450080"
+    elif era == "2016postVFP":
+        lumi = "16.8"
+    elif era == "2017":
+        lumi = "41.529"
+    elif era == "2018":
+        lumi = "59.83"
+
+    return lumi
 
 ntuples = {}
 channel = 'mt'
@@ -112,5 +125,7 @@ plt.ylabel("dN")
 plt.hist(df_pnet[args.quantity].values, args.bins )
 
 plt.xlim(xlim_down, xlim_up)
+plt.title('CMS $Preliminary$ ', loc='left')
+plt.title(args.era+  "_UL "+ get_lumi(args.era)+ ' fb$^{-1}$  (13 TeV)', loc='right')
 
 plt.savefig(args.quantity+"_zp_incl_pnet_{cut}.pdf".format(cut=str(args.pnetcut)))
