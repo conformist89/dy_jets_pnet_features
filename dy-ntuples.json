@@ -38,7 +38,7 @@
         "xlim_down" : 0,
         "xlim_up" : 1000,
         "unphys_value" : -10,
-        "label" : "\\p_{T} of subjet clothest to fatjet \\mu$"
+        "label" : "muon $p_{T}$"
     },
 
     "fj_Xtm_clothest_subj_muon_eta" :
@@ -46,7 +46,7 @@
         "xlim_down" : -3,
         "xlim_up" : 3,
         "unphys_value" : -10,
-        "label" : "$eta_{mu}$"
+        "label" : "muon ${eta}$"
     },
 
     "mu_tau_finalstate_mu_pt" :
@@ -62,7 +62,7 @@
         "xlim_down" : -3,
         "xlim_up" : 3,
         "unphys_value" : -10,
-        "label" : "muon $p_{eta}$"
+        "label" : "muon ${eta}$"
     }
 
 }
