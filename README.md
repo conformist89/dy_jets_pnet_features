@@ -12,7 +12,7 @@ python3 fat_jet_mu_tau_par_df.py --quantity fatjet_mu_tau_deltaR  --tag boost_mc
 ntuples tag that was used for ntuples production, `--bins` number of bins on the histogram to be 
 plotted, `--pnetcut` BDT score of PNet. This gives you the following picture
 
-![screenshot](mu_tau_finalstate_mu_pt_zp_incl_pnet_0.0.pdf)
+![](mu_tau_finalstate_mu_pt_zp_incl_pnet_0.0.pdf)
 
 If you want to make a nice plot of deltaR distributed regarding of pT, use this script
 
