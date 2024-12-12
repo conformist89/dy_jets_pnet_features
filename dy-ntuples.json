@@ -63,7 +63,28 @@
         "xlim_up" : 3,
         "unphys_value" : -10,
         "label" : "muon ${eta}$"
+    },
+
+    "fj_Xtm_muon_subj_deltaR" :
+
+    {
+        "xlim_down" : 0,
+        "xlim_up" : 0.3,
+        "unphys_value" : -10,
+        "label" : "subjet & muon $deltaR$"
+
+    },
+
+    "fj_Xtm_muon_subj_deltaPt" :
+
+    {
+        "xlim_down" :0,
+        "xlim_up" : 500,
+        "unphys_value" : -10,
+        "label" : "subjet & muon $delta p_T$"
+
     }
+
 
 }
 }

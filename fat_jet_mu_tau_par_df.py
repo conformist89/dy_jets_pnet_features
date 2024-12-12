@@ -93,7 +93,8 @@ for key, value in ntuples.items():
 
 
 df = ROOT.RDataFrame("ntuple", file_names_lst)
-data_dict = df.AsNumpy([args.quantity, "fj_Xtm_particleNet_XtmVsQCD"])
+data_dict = df.AsNumpy([args.quantity, "fj_Xtm_particleNet_XtmVsQCD", "eles_finalstate", "mu_tau_finalstate",
+                         "fj_XtmVsQCD_pt", "fj_Xtm_msoftdrop", "fj_Xtm_muon_subj_deltaR", "fj_Xtm_muon_subj_deltaPt"])
 pandas_df = pd.DataFrame(data_dict)
 
 
@@ -103,7 +104,11 @@ xlim_up = legend_inf["xlim_up"]
 xlim_down = legend_inf["xlim_down"]
 unphys_value = legend_inf["unphys_value"]
 
-df_pnet = pandas_df[(pandas_df["fj_Xtm_particleNet_XtmVsQCD"] > args.pnetcut) & (pandas_df[args.quantity] != unphys_value)]
+finalstate = ( pandas_df["eles_finalstate"] ==0 ) & ( pandas_df["mu_tau_finalstate"] ==1 ) 
+
+fatjet_pt_cut = ( pandas_df["fj_XtmVsQCD_pt"] >200 ) & ( pandas_df["fj_Xtm_msoftdrop"] >40 ) 
+
+df_pnet = pandas_df[(pandas_df["fj_Xtm_particleNet_XtmVsQCD"] > args.pnetcut) & (pandas_df[args.quantity] != unphys_value) & finalstate & fatjet_pt_cut]
 
 
 SMALL_SIZE = 12
