@@ -30,7 +30,7 @@
         "xlim_down" : -4,
         "xlim_up" : 4,
         "unphys_value" : 8,
-        "label" : "\\Delta$ \\phi (fatjet && gen $\\tau_{had} \\tau_{\\mu} pair)$"
+        "label" : "$\\Delta\\phi\\ (\\mathrm{fat\\ jet},\\ \\mathrm{gen}\\ \\tau_{\\mathrm{had}}\\tau_{\\mu})$"
     },
 
     "fj_Xtm_clothest_subj_muon_pt" :
@@ -83,7 +83,25 @@
         "unphys_value" : -10,
         "label" : "subjet & muon $delta p_T$"
 
+    },
+
+    "fj_Xtm_clothest_subj_tau_pt" :
+    {
+        "xlim_down" :0,
+        "xlim_up" : 500,
+        "unphys_value" : -10,
+        "label" : "$\tau$ p_T$"
+    },
+
+    "GenVisTau_pt" :
+
+    {
+        "xlim_down" :0,
+        "xlim_up" : 500,
+        "unphys_value" : -10,
+        "label" : "$\tau$ p_T$"
     }
+
 
 
 }
