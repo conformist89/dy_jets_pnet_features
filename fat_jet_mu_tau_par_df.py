@@ -130,7 +130,7 @@ plt.ylabel("dN")
 plt.hist(df_pnet[args.quantity].values, args.bins )
 
 plt.xlim(xlim_down, xlim_up)
-plt.title('CMS $Preliminary$ ', loc='left')
-plt.title(args.era+  "_UL "+ get_lumi(args.era)+ ' fb$^{-1}$  (13 TeV)', loc='right')
+plt.title(r'CMS $\it{Private\ work}$', loc='left')
+plt.title(args.era+  " "+ get_lumi(args.era)+ ' fb$^{-1}$  (13 TeV)', loc='right')
 
-plt.savefig(args.quantity+"_zp_incl_pnet_{cut}.pdf".format(cut=str(args.pnetcut)))
+plt.savefig(args.quantity+"_zp_incl_pnet_{cut}_dy_jets.pdf".format(cut=str(args.pnetcut)))
